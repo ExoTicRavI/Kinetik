@@ -12,7 +12,7 @@ void setup(SDL_Window *window,SDL_Renderer *renderer) {
 
     SDL_FRect GameBox;
 
-    SDL_SetRenderDrawColor(renderer, 40, 180, 60, SDL_ALPHA_TRANSPARENT);
+    SDL_SetRenderDrawColor(renderer, 34, 139, 34, SDL_ALPHA_TRANSPARENT);
     
     SDL_RenderClear(renderer);
 

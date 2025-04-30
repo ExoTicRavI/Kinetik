@@ -10,7 +10,7 @@ SRC_DIR = src
 INC_DIR = include
 
 # Source files
-SRC = $(SRC_DIR)/main.c $(SRC_DIR)/setup.c
+SRC = $(SRC_DIR)/main.c $(SRC_DIR)/setup.c $(SRC_DIR)/keyboard.c
 
 # Output binary
 TARGET = main
