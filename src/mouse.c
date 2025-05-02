@@ -30,9 +30,7 @@ void check_hover() {
 }
 
 void check_click(SDL_Event *event) {
-    if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-        if (event->button.button == SDL_BUTTON_LEFT){
+    if (event->button.button == SDL_BUTTON_LEFT){
             clicked_menu = !clicked_menu;
-        }
     }
 }
