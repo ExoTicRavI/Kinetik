@@ -2,9 +2,11 @@
 #define SETUP_H
 
 #include <SDL3/SDL.h>
+#include <stdint.h>
 
-extern const int BOARD_WIDTH;
-extern const int BOARD_HEIGHT;
+extern int WIN_WIDTH;
+extern int WIN_HEIGHT;
+extern SDL_FRect MENU_POSITION;
 
 void setup(SDL_Window *window,SDL_Renderer *renderer);
 
