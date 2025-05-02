@@ -4,18 +4,19 @@
 #include <stdint.h>
 #include <setup.h>
 #include <keyboard.h>
+#include <mouse.h>
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
-static SDL_Event *sdl_event = NULL;
+
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     (void)appstate;
     (void)argc;
     (void)argv;
 
-    const int WIN_WIDTH = 1000;
-    const int WIN_HEIGHT = 625;
+    const int MIN_WIN_WIDTH = 800;
+    const int MIN_WIN_HEIGHT = 500;
 
     SDL_SetAppMetadata("Kinetik", "1.0", "kinetik.com");
 
@@ -24,16 +25,14 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
         return SDL_APP_FAILURE;
     }
 
-    if (!SDL_CreateWindowAndRenderer("Kinetic", WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
+    if (!SDL_CreateWindowAndRenderer("Kinetic", MIN_WIN_WIDTH, MIN_WIN_HEIGHT, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
-        return SDL_APP_FAILURE;
     }
 
     SDL_SetWindowAspectRatio(window, 16.0f / 10.0f, 16.0f / 10.0f);
-    SDL_SetWindowMinimumSize(window, BOARD_WIDTH, BOARD_HEIGHT);
+    SDL_SetWindowMinimumSize(window, MIN_WIN_WIDTH, MIN_WIN_HEIGHT);
 
     setup(window, renderer);
-
 
     return SDL_APP_CONTINUE;
 }
@@ -41,7 +40,6 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
     (void)appstate;
-    sdl_event = event;
     if (event->type == SDL_EVENT_QUIT) {
         return SDL_APP_SUCCESS; // end the program, reporting success to the os
     }
@@ -52,6 +50,10 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 
     if (event->type == SDL_EVENT_KEY_DOWN || event->type == SDL_EVENT_KEY_UP) {
         handleKeypress(event);
+    }
+
+    if (event->type == SDL_EVENT_MOUSE_MOTION) {
+        check_hover();
     }
 
     return SDL_APP_CONTINUE;

@@ -1,16 +1,16 @@
-# Makefile for SDL3 Game Project with modular directories
-
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c17 -Isrc -Iinclude $(shell pkg-config --cflags sdl3)
-LDFLAGS = $(shell pkg-config --libs sdl3)
+CFLAGS = -Wall -Wextra -std=c17 -Isrc -Iinclude \
+    -I/opt/homebrew/include/SDL3 -D_THREAD_SAFE
+
+LDFLAGS = -L/opt/homebrew/lib -lSDL3 -lSDL3_image
 
 # Directories
 SRC_DIR = src
 INC_DIR = include
 
 # Source files
-SRC = $(SRC_DIR)/main.c $(SRC_DIR)/setup.c $(SRC_DIR)/keyboard.c
+SRC = $(SRC_DIR)/main.c $(SRC_DIR)/setup.c $(SRC_DIR)/keyboard.c $(SRC_DIR)/mouse.c
 
 # Output binary
 TARGET = main
