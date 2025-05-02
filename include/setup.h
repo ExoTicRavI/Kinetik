@@ -6,7 +6,8 @@
 
 extern int WIN_WIDTH;
 extern int WIN_HEIGHT;
-extern SDL_FRect MENU_POSITION;
+extern SDL_FRect GAME_BOX;
+extern SDL_FRect MENU;
 
 void setup(SDL_Window *window,SDL_Renderer *renderer);
 

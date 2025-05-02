@@ -50,6 +50,6 @@ void handleKeypress(SDL_Event *event) {
         }   
     }
 
-    SDL_Log("W: %d, S: %d, UP: %d, DOWN: %d", w_pressed, s_pressed, up_pressed, down_pressed);
+    SDL_Log("W: %d, S: %d, UP_ARROW: %d, DOWN_ARRROW: %d", w_pressed, s_pressed, up_pressed, down_pressed);
 
 }

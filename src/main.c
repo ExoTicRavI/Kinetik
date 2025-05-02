@@ -56,6 +56,11 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
         check_hover();
     }
 
+    if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+        check_click(event);
+        SDL_Log("%d", clicked_menu);
+    }
+
     return SDL_APP_CONTINUE;
 }
 
@@ -70,5 +75,6 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 void SDL_AppQuit(void *appstate, SDL_AppResult result) {
     (void)appstate;
     (void)result;
+
     // SDL will clean up the window/renderer for us
 }
