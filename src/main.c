@@ -5,9 +5,7 @@
 #include <setup.h>
 #include <keyboard.h>
 #include <mouse.h>
-
-static SDL_Window *window = NULL;
-static SDL_Renderer *renderer = NULL;
+#include <render.h>
 
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
@@ -15,25 +13,13 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
     (void)argc;
     (void)argv;
 
-    const int MIN_WIN_WIDTH = 800;
-    const int MIN_WIN_HEIGHT = 500;
+    setup();
+    SDL_RenderClear(renderer);
 
-    SDL_SetAppMetadata("Kinetik", "1.0", "kinetik.com");
+    RENDER_GameBox();
+    RENDER_MenuIcon();
 
-    if (!SDL_Init(SDL_INIT_VIDEO)) {
-        SDL_Log("Couldn't initilize SDL: %s", SDL_GetError());
-        return SDL_APP_FAILURE;
-    }
-
-    if (!SDL_CreateWindowAndRenderer("Kinetic", MIN_WIN_WIDTH, MIN_WIN_HEIGHT, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
-        SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
-    }
-
-    SDL_SetWindowAspectRatio(window, 16.0f / 10.0f, 16.0f / 10.0f);
-    SDL_SetWindowMinimumSize(window, MIN_WIN_WIDTH, MIN_WIN_HEIGHT);
-
-    setup(window, renderer);
-
+    SDL_RenderPresent(renderer);
     return SDL_APP_CONTINUE;
 }
 
@@ -45,7 +31,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
     }
 
     if (event->type == SDL_EVENT_WINDOW_RESIZED) {
-        setup(window, renderer);
+        
     }
 
     if (event->type == SDL_EVENT_KEY_DOWN || event->type == SDL_EVENT_KEY_UP) {
@@ -57,8 +43,13 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
     }
 
     if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-        check_click(event);
-        SDL_Log("%d", clicked_menu);
+        if (event->button.button == SDL_BUTTON_LEFT && SDL_PointInRectFloat(&mousePosition, &MENU_TOGGLE_BUTTON)) {
+            SDL_RenderClear(renderer);
+            RENDER_PauseMenu();
+            SDL_RenderPresent(renderer);
+            PAUSE_MENU_SHOWN = !PAUSE_MENU_SHOWN;
+        }
+        
     }
 
     return SDL_APP_CONTINUE;

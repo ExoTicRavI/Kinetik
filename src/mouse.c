@@ -1,6 +1,6 @@
-#include <mouse.h>
-#include <setup.h>
+#include <render.h>
 #include <SDL3/SDL.h>
+#include <setup.h>
 
 SDL_FPoint mousePosition;
 bool cursor_on_menu = false;
@@ -24,13 +24,7 @@ void toggle_cursor(bool state) {
 
 void check_hover() {
     SDL_GetMouseState(&mousePosition.x, &mousePosition.y);
-    cursor_on_menu = SDL_PointInRectFloat(&mousePosition, &MENU);
+    cursor_on_menu = SDL_PointInRectFloat(&mousePosition, &MENU_TOGGLE_BUTTON);
 
     toggle_cursor(cursor_on_menu);
-}
-
-void check_click(SDL_Event *event) {
-    if (event->button.button == SDL_BUTTON_LEFT){
-            clicked_menu = !clicked_menu;
-    }
 }

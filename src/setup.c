@@ -1,52 +1,32 @@
 #include <setup.h>
 #include <SDL3/SDL.h>
-#include <SDL3_image/SDL_image.h>
-#include <SDL3/SDL_main.h>
 #include <stdint.h>
+#include <window_resize.h>
+#include <render.h>
 
-int WIN_WIDTH;
-int WIN_HEIGHT;
-SDL_FRect GAME_BOX;
-SDL_FRect MENU;
+SDL_Window *window = NULL;
+SDL_Renderer *renderer = NULL;
 
-void setup(SDL_Window *window,SDL_Renderer *renderer) {
-    SDL_GetWindowSize(window, &WIN_WIDTH, &WIN_HEIGHT);
+int setup() {
+    SDL_SetAppMetadata("Kinetik", "1.0", "kinetik.com");
 
-    SDL_Texture *menuTexture;
+    const int MIN_WIN_WIDTH = 800;
+    const int MIN_WIN_HEIGHT = 500;
 
-    SDL_SetRenderDrawColor(renderer, 34, 139, 34, SDL_ALPHA_TRANSPARENT);
-    
-    SDL_RenderClear(renderer);
-
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_TRANSPARENT);  /* blue, full alpha */
-    GAME_BOX.w = WIN_WIDTH - 8;
-    GAME_BOX.h = WIN_HEIGHT - 8;
-    GAME_BOX.x = 4;
-
-    GAME_BOX.y = 4;
-
-    SDL_RenderFillRect(renderer, &GAME_BOX);
-
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderLine(renderer, 4, 4, GAME_BOX.w + 4, 4);
-    SDL_RenderLine(renderer, 4, 4, 4, GAME_BOX.h + 4);
-    SDL_RenderLine(renderer, GAME_BOX.w + 4, GAME_BOX.h + 4, GAME_BOX.w + 4, 4);
-    SDL_RenderLine(renderer, GAME_BOX.w + 4, GAME_BOX.h + 4, 4, GAME_BOX.h + 4);
-
-    menuTexture = IMG_LoadTexture(renderer, "./src/menu_icon.bmp");
-
-    if (menuTexture == NULL) {
-        SDL_Log("Couldn't create menuTexutre: %s", SDL_GetError());
+    if (!SDL_Init(SDL_INIT_VIDEO)) {
+        SDL_Log("Couldn't initilize SDL: %s", SDL_GetError());
+        return SDL_APP_FAILURE;
     }
 
-    MENU.x = GAME_BOX.w + 4 -35;
-    MENU.y = 4;
-    MENU.w = MENU.h = 35;
+    if (!SDL_CreateWindowAndRenderer("Kinetic", MIN_WIN_WIDTH, MIN_WIN_HEIGHT, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
+        SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
+    }
 
-    
-    SDL_RenderTexture(renderer, menuTexture, NULL, &MENU);
+    SDL_SetWindowAspectRatio(window, 16.0f / 10.0f, 16.0f / 10.0f);
+    SDL_SetWindowMinimumSize(window, MIN_WIN_WIDTH, MIN_WIN_HEIGHT);
 
-    SDL_RenderPresent(renderer);
+    SET_NEW_WINDOW_DIMENSIONS();
 
+
+    return SDL_APP_CONTINUE;
 }
-

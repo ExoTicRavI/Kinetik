@@ -4,11 +4,9 @@
 #include <SDL3/SDL.h>
 #include <stdint.h>
 
-extern int WIN_WIDTH;
-extern int WIN_HEIGHT;
-extern SDL_FRect GAME_BOX;
-extern SDL_FRect MENU;
+extern SDL_Window *window;
+extern SDL_Renderer *renderer;
 
-void setup(SDL_Window *window,SDL_Renderer *renderer);
+int setup(void);
 
 #endif // SETUP_H
