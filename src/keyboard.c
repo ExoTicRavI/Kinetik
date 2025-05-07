@@ -1,6 +1,9 @@
 #include <keyboard.h>
 #include <SDL3/SDL.h>
 #include <stdbool.h>
+#include <render.h>
+#include <window_resize.h>
+#include <setup.h>
 
 bool w_pressed = false;
 bool s_pressed = false;
@@ -49,7 +52,5 @@ void handleKeypress(SDL_Event *event) {
             break;
         }   
     }
-
-    SDL_Log("W: %d, S: %d, UP_ARROW: %d, DOWN_ARRROW: %d", w_pressed, s_pressed, up_pressed, down_pressed);
 
 }
