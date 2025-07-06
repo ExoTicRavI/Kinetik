@@ -14,7 +14,7 @@ int main(void) {
     const int screen_height = 800;
 
 
-    InitWindow(screen_width, screen_height, "My Ping Pong Game");
+    InitWindow(screen_width, screen_height, "KINETIK");
     SetTargetFPS(60);
 
     Ball ball;
