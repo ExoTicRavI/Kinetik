@@ -134,6 +134,7 @@ int main(void) {
                             Player2_paddle.y = screen_height / 2 - 60;
                             ball.x = screen_width / 2;
                             ball.y = screen_height / 2;
+                            SetMouseCursor(MOUSE_CURSOR_DEFAULT);
                         }
                     } else {
                         DrawRectangleRec(replayBtn, GREEN);  // Normal color
