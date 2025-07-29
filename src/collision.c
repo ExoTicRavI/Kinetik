@@ -4,7 +4,7 @@
 #include <state.h>
 #include <player.h>
 
-const int win_score = 5;
+const int win_score = 3;
 
 void CheckWallCollision(Ball *ball, int screen_width, int screen_height) { // Check collision on top and bottom
     if (ball->y - ball->radius <= 0 || ball->y + ball->radius >= screen_height) {
@@ -12,9 +12,9 @@ void CheckWallCollision(Ball *ball, int screen_width, int screen_height) { // Ch
     } else if (ball->x - ball->radius <= 0) {
         // Player 2 (Second player) scores a point
         printf("player 2 scores\n");
-        player1.score++;
+        player2.score++;
 
-        if (player1.score == win_score) {
+        if (player2.score == win_score) {
             StatePlay = STATE_END;
         } else {
             StatePlay = STATE_SCORE;
@@ -24,9 +24,9 @@ void CheckWallCollision(Ball *ball, int screen_width, int screen_height) { // Ch
     } else if (ball->x - ball->radius >= screen_width) {
         // Player 1 (Second player) scores a point
         printf("Player 1 scores\n");
-        player2.score++;
+        player1.score++;
 
-        if (player2.score == win_score) {
+        if (player1.score == win_score) {
             StatePlay = STATE_END;
         } else {
             StatePlay = STATE_SCORE;
