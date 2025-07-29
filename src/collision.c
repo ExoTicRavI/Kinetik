@@ -5,7 +5,7 @@
 #include <state.h>
 #include <player.h>
 
-const win_score = 5;
+const int win_score = 5;
 
 void CheckWallCollision(Ball *ball, int screen_width, int screen_height) { // Check collision on top and bottom
     if (ball->y - ball->radius <= 0 || ball->y + ball->radius >= screen_height) {
