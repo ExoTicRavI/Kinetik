@@ -2,30 +2,43 @@
 CC = gcc
 CFLAGS = -Iinclude -Wall -g
 
-# Libraries to link (adjust for your OS and raylib install)
-LIBS = -lraylib -lwinmm -lgdi32 -luser32
-
-# Source and object files
+# Source and object directories
 SRCDIR = src
 OBJDIR = obj
+BINDIR = bin
 
+# Source and object files
 SOURCES = $(wildcard $(SRCDIR)/*.c)
 OBJECTS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
 
-# Output executable
-TARGET = pong.exe
+# OS detection
+UNAME_S := $(shell uname -s)
 
-# Create object directory if not exist
-$(shell mkdir -p $(OBJDIR))
+ifeq ($(UNAME_S), Darwin)  # macOS
+	CFLAGS += -I/opt/homebrew/include
+	LDFLAGS = -L/opt/homebrew/lib -lraylib \
+	          -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio
+	TARGET = $(BINDIR)/pong-mac
+else  # Assume Windows (MinGW or similar)
+	LDFLAGS = -lraylib -lwinmm -lgdi32 -luser32
+	TARGET = $(BINDIR)/pong.exe
+endif
 
+# Ensure folders exist
+$(shell mkdir -p $(OBJDIR) $(BINDIR))
+
+# Default target
 all: $(TARGET)
 
+# Link object files into the final executable
 $(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $@ $(LIBS)
+	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
 
+# Compile source files to object files
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# Clean build artifacts
 clean:
 	rm -rf $(OBJDIR)/*.o $(TARGET)
 
