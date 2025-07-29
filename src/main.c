@@ -6,6 +6,7 @@
 #include "state.h"
 #include "player.h"
 #include <stdbool.h>
+#include <stdlib.h> // Added for file operations
 
 void DrawBall(Ball ball) {
     DrawCircle((int)ball.x, (int)ball.y, ball.radius, WHITE);
@@ -29,6 +30,20 @@ Ball ball = {
 
 Paddle Player1_paddle = { 15, screen_height / 2 - 60, 20, 120, 6 };
 Paddle Player2_paddle = { screen_width - 35, screen_height / 2 - 60, 20, 120, 6 };
+
+
+void SaveScoresToFile(int score1, int score2) {
+    printf("Attempting to save scores...\n"); 
+    FILE *file = fopen("scores.txt", "a");
+    if (file != NULL) {
+        fprintf(file, "Player 1: %d | Player 2: %d\n", score1, score2);
+        fclose(file);
+        printf("Scores saved successfully.\n"); 
+    } else {
+        printf("Failed to open scores.txt for writing.\n");
+    }
+}
+
 
 void intializeGame() {
     if (!ballLaunched && IsKeyPressed(KEY_SPACE)) {
@@ -114,6 +129,9 @@ int main(void) {
                     } else {
                         DrawText("It's a draw!", screen_width / 2 - 100, screen_height / 2 - 200, 35, GREEN);
                     }
+
+                    
+                    SaveScoresToFile(player1.score, player2.score);
 
                     Rectangle replayBtn = { screen_width / 2 - 50, screen_height / 2 - 20, 100, 40 };
                     mousePoint = GetMousePosition();
