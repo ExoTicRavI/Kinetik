@@ -1,5 +1,4 @@
 #include "player.h"
-#include <stdbool.h>
 
 Player player1 = {
     .name = "Player 1",

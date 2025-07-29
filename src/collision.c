@@ -1,6 +1,5 @@
 #include "collision.h"
 #include "paddle.h"
-#include <stdbool.h>
 #include <stdio.h>
 #include <state.h>
 #include <player.h>
@@ -13,9 +12,9 @@ void CheckWallCollision(Ball *ball, int screen_width, int screen_height) { // Ch
     } else if (ball->x - ball->radius <= 0) {
         // Player 2 (Second player) scores a point
         printf("player 2 scores\n");
-        player2.score++;
+        player1.score++;
 
-        if (player2.score == win_score) {
+        if (player1.score == win_score) {
             StatePlay = STATE_END;
         } else {
             StatePlay = STATE_SCORE;
@@ -25,9 +24,9 @@ void CheckWallCollision(Ball *ball, int screen_width, int screen_height) { // Ch
     } else if (ball->x - ball->radius >= screen_width) {
         // Player 1 (Second player) scores a point
         printf("Player 1 scores\n");
-        player1.score++;
+        player2.score++;
 
-        if (player1.score == win_score) {
+        if (player2.score == win_score) {
             StatePlay = STATE_END;
         } else {
             StatePlay = STATE_SCORE;
@@ -36,7 +35,7 @@ void CheckWallCollision(Ball *ball, int screen_width, int screen_height) { // Ch
 }
 
 // Simple AABB vs Circle collision
-bool CheckPaddleCollision(Ball *ball, Paddle paddle) {
+void CheckPaddleCollision(Ball *ball, Paddle paddle) {
     // Find closest point on paddle rectangle to the ball center
     float closestX = ball->x;
     float closestY = ball->y;
@@ -58,9 +57,5 @@ bool CheckPaddleCollision(Ball *ball, Paddle paddle) {
 
         float hitPos = (ball->y - paddle.y) / paddle.height; // 0.0 to 1.0
         ball->speed_y = 5 * (hitPos - 0.5f) * 2; // Speed between -5 and 5
-
-        return true; // if collission is detected return true
-    } else {
-        return false; // if collision is not detected return false
     }
 }

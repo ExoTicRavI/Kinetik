@@ -5,6 +5,7 @@
 #include "paddle.h"
 #include "state.h"
 #include <stdbool.h>
+#include <player.h>
 
 void DrawBall(Ball ball) {
     DrawCircle((int)ball.x, (int)ball.y, ball.radius, WHITE);
@@ -69,9 +70,6 @@ int main(void) {
     InitWindow(screen_width, screen_height, "KINETIK");
     SetTargetFPS(60);
 
-    
-
-
     while (!WindowShouldClose()) { // main game loop
 
         if (StatePlay == STATE_BEGIN || StatePlay == STATE_SCORE) {
@@ -97,6 +95,42 @@ int main(void) {
             DrawBall(ball);
             DrawPaddle(Player1_paddle);
             DrawPaddle(Player2_paddle);
+
+            char player1Score[10];
+            char player2Score[10];
+
+            sprintf(player1Score, "Score: %d", player2.score);
+            sprintf(player2Score, "Score: %d", player1.score);
+                
+            DrawText(player1Score, 10, 10, 20, BLUE);
+            DrawText(player2Score, screen_width - 100, 10, 20, RED);
+
+            if (StatePlay == STATE_END) {
+                if (player1.score > player2.score) {
+                    DrawText("Player 1 won the game", screen_width / 2 - 180, screen_height / 2 - 200, 35, GREEN);
+                } else {
+                    DrawText("Player 1 won the game", screen_width / 2 - 180, screen_height / 2 - 200, 35, GREEN);
+                }
+            }
+
+            if (StatePlay == STATE_SCORE) {
+                Player1_paddle.y = screen_height / 2 - 60;
+                Player2_paddle.y = screen_height / 2 - 60;
+                ball.x = screen_width / 2;
+                ball.y = screen_height / 2;
+
+                ballLaunched = false;
+
+                framecounter = 0;
+
+                StatePlay = STATE_BEGIN;
+
+                player1Turn = !player1Turn;
+            }
+
+            if (StatePlay == STATE_BEGIN && ballLaunched == false) {
+                DrawText("Click Spacebar or LeftClick to Launch the Ball", screen_width / 2 - 350, screen_height / 2 - 80, 30, YELLOW);
+            }
             break;
 
         case STATE_MENU:

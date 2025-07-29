@@ -19,5 +19,5 @@ void UpdatePaddle(Paddle *paddle, int upKey, int downKey, int screen_height) {
 }
 
 void DrawPaddle(Paddle paddle) {
-    DrawRectangle((int)paddle.x, (int)paddle.y, (int)paddle.width, (int)paddle.height, WHITE);
+    DrawRectangle((int)paddle.x, (int)paddle.y, (int)paddle.width, (int)paddle.height, (int)paddle.x == 15 ? BLUE : RED);
 }
