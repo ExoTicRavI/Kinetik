@@ -74,8 +74,9 @@ int main(void) {
 
     while (!WindowShouldClose()) { // main game loop
 
-        
-        intializeGame();
+        if (StatePlay == STATE_BEGIN || StatePlay == STATE_SCORE) {
+            intializeGame();
+        }
         
         BeginDrawing();
         ClearBackground(BLACK);
