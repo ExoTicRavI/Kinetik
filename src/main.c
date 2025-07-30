@@ -6,7 +6,7 @@
 #include "state.h"
 #include "player.h"
 #include <stdbool.h>
-#include <stdlib.h> // Added for file operations
+#include <stdlib.h>
 
 void DrawBall(Ball ball) {
     DrawCircle((int)ball.x, (int)ball.y, ball.radius, WHITE);
@@ -14,6 +14,7 @@ void DrawBall(Ball ball) {
 
 static int framecounter = 0;
 static bool player1Turn = false;
+static bool scoresSaved = false; // 🆕 Ensure scores saved only once
 
 const int screen_width = 1280;
 const int screen_height = 800;
@@ -31,19 +32,17 @@ Ball ball = {
 Paddle Player1_paddle = { 15, screen_height / 2 - 60, 20, 120, 6 };
 Paddle Player2_paddle = { screen_width - 35, screen_height / 2 - 60, 20, 120, 6 };
 
-
 void SaveScoresToFile(int score1, int score2) {
-    printf("Attempting to save scores...\n"); 
+    printf("Attempting to save scores...\n");
     FILE *file = fopen("scores.txt", "a");
     if (file != NULL) {
         fprintf(file, "Player 1: %d | Player 2: %d\n", score1, score2);
         fclose(file);
-        printf("Scores saved successfully.\n"); 
+        printf("Scores saved successfully.\n");
     } else {
         printf("Failed to open scores.txt for writing.\n");
     }
 }
-
 
 void intializeGame() {
     if (!ballLaunched && IsKeyPressed(KEY_SPACE)) {
@@ -131,7 +130,10 @@ int main(void) {
                     }
 
                     
-                    SaveScoresToFile(player1.score, player2.score);
+                    if (!scoresSaved) {
+                        SaveScoresToFile(player1.score, player2.score);
+                        scoresSaved = true;
+                    }
 
                     Rectangle replayBtn = { screen_width / 2 - 50, screen_height / 2 - 20, 100, 40 };
                     mousePoint = GetMousePosition();
@@ -148,6 +150,7 @@ int main(void) {
                             player1Turn = false;
                             ballLaunched = false;
                             framecounter = 0;
+                            scoresSaved = false; // 🆕 Reset for next match
                             Player1_paddle.y = screen_height / 2 - 60;
                             Player2_paddle.y = screen_height / 2 - 60;
                             ball.x = screen_width / 2;
